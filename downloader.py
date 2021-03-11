@@ -16,33 +16,36 @@ if len(sys.argv) < 2:
   print("At least 1 Argument required")
   exit()
 #PATH = '/projects/grail/portrait-rephotography/yoosehy/wiki_data/%s/' #'images/' + sys.argv[i] + '/'
-PATH = 'images/%s/'
+PATH = 'images/'
+#PATH = 'images/%s/'
 data = {}
 year_mapper = {}
+os.makedirs(PATH, exist_ok=True)
+filepath = PATH #% year
 for i in range(1, len(sys.argv)):
-  temp = load_obj(sys.argv[i])
+  page_key = sys.argv[i]
+  fn_pre = filepath + page_key
+  if any(os.path.isfile(fn_pre + ext) for ext in [".jpg", ".jpeg", ".png"]):
+    continue
+  temp = load_obj(page_key)
   for name in temp:
     temp[name] = (sys.argv[i], temp[name])
   data.update(temp)
   print(sys.argv[i] + '  ' + str(len(temp)))
 
-  try:
-      os.mkdir(PATH % sys.argv[i])
-  except OSError as e:
-    pass
 
 for name in data:
   year, (img_url, infobox) = data[name]
   print(name + ' : ' + img_url)
   #if '.' not in img_url:
   #  continue
-  filepath = PATH % year
+ # filepath = PATH #% year
   #f = open(filepath + name + '.txt', 'wt')
   #f.write(str(infobox))
   #f.close()
   file_name, ext = os.path.splitext(img_url)
   if path.exists(filepath + name + ext):
-    continue 
+    continue
   #wget.download(img_url, 'images/' + name + ext)
   r = requests.get(img_url, stream = True)
   while r.status_code == 429:
@@ -52,7 +55,7 @@ for name in data:
   if r.status_code == 200:
     # Set decode_content value to True, otherwise the downloaded image file's size will be zero.
     r.raw.decode_content = True
-    
+
     # Open a local file with wb ( write binary ) permission.
     with open(filepath + name + ext,'wb') as f:
         shutil.copyfileobj(r.raw, f)

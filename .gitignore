@@ -2,3 +2,9 @@
 images/
 aligned/
 dict
+images_names/
+*.jpg
+*.jpeg
+*.png
+*.json
+*.pkl
