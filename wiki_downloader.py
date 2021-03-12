@@ -1,7 +1,6 @@
 from argparse import ArgumentParser
 import wikipedia
 import requests
-import json
 import wptools
 import pickle
 import sys
@@ -9,14 +8,12 @@ import urllib.request as req
 import urllib
 import os
 from os.path import join as pjoin
+import json
 
 
-def save_obj(obj, name ):
-    os.makedirs('dict', exist_ok=True)
-    with open('dict/'+ name + '.pkl', 'wb') as f:
-        pickle.dump(obj, f, pickle.HIGHEST_PROTOCOL)
-    os.makedirs('json', exist_ok=True)
-    with open('json/' + name + '.json', 'w') as f:
+def save_obj(obj, fn):
+    os.makedirs(os.path.dirname(fn), exist_ok=True)
+    with open(fn, 'w') as f:
         json.dump(obj, f)
 
 def load_obj(name ):
@@ -70,7 +67,7 @@ if __name__ == "__main__":
         p = wptools.page(link, silent=True).get_parse()#'Leopold II of Belgium').get_parse()
         infobox = p.data['infobox']
         data[link] = (img, infobox)
-        save_obj(data, link)
-        print(len(data), f"caption: {infobox['caption']}" if 'caption' in infobox else "birth: {infobox['birth_date']}")
+        save_obj(data, out_fn)
+        print(len(data), f"caption: {infobox['caption']}" if 'caption' in infobox else f"birth: {infobox['birth_date']}")
     except Exception as e:
         print(f"[Error] can't download {link}")
