@@ -68,7 +68,7 @@ def main(args):
         p = wptools.page(name, silent=True).get_parse()#'Leopold II of Belgium').get_parse()
         infobox = p.data['infobox']
         data[name] = (img, infobox)
-    save_obj(pjoin("json", f"{args.page}.json"), data)
+    save(pjoin("json", f"{args.page}.json"), data)
     print(len(data))
 
 
