@@ -43,7 +43,9 @@ def parse_args():
 
 if __name__ == "__main__":
     args = parse_args()
-    link = wikipedia.search(args.page_id, results=1)[0]
+    suggestion = wikipedia.suggest(args.page_id)
+    search_key = suggestion if suggestion is not None else args.page_id
+    link = wikipedia.search(search_key, results=1)[0]
     print(link)
     out_fn = pjoin("json", args.subdir, link + ".json")
     if os.path.isfile(out_fn):

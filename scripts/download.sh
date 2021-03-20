@@ -5,7 +5,7 @@ list_name="${list%.*}"
 list_name="${list_name##*/}"
 
 while read name; do
-#    echo "${name}"
+    echo "${name}"
     python wiki_downloader.py "${name}" --subdir "${list_name}"
 done < "${list}"
 
