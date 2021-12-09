@@ -3,6 +3,8 @@ images/
 aligned/
 dict
 images_names/
+meta/
+copyright/
 *.jpg
 *.jpeg
 *.png
